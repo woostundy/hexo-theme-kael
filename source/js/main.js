@@ -1,16 +1,4 @@
 var hasPushstate = !!(window.history && history.pushState);
-// duoshuo load function
-var duoshuoName = 'yuche'; // change to your DUOSHUO name
-var duoshuoQuery = {short_name: duoshuoName}; // change to your duoshuo name
-function toggleDuoshuoComments(container) {
-    var el = document.createElement('div');
-    el.setAttribute('data-thread-key', postTitle);
-    el.setAttribute('data-url', postHref);
-    el.setAttribute('data-title', postTitle);
-    el.setAttribute('data-author-key', duoshuoName); // change to your duoshuo name
-    DUOSHUO.EmbedThread(el);
-    jQuery(container).append(el);
-}
 
 var smallScreen = window.screen.width < 500;
 
@@ -27,105 +15,6 @@ var generateTOC = function() {
         });
 
 };
-
-//    Multiple DUOSHUO threads for PJAX START
-
-function  duoshuoInlineComment(){
-    $(".post-content").find('p,pre,ol,ul,blockquote,figure')
-        .each(function () {
-            $(this).attr("class", "disqus");
-            $(this).prepend('<span class="ds-thread-count">+</span>');
-        });
-    $('span.ds-thread-count').each(function(i){
-        var self = $(this);
-        $(this).attr('id','comment' + i );
-        var identifier =  postTitle + $(this).attr('id');
-        var jsonURL = 'http://api.duoshuo.com/threads/counts.jsonp?short_name=' +
-            duoshuoName + '&threads=' + identifier +
-            '&callback=?';
-        $.getJSON(jsonURL,function(data) {
-            $.each(data.response, function(i, item) {
-                if (item.comments !== 0){
-                    self.text(item.comments);
-                    self.css('opacity','0.4');
-                    self.addClass('has-comment');
-                }
-            });
-        });
-        $(this).after('<div class="inline-comment"></div>');
-    });
-
-
-    $('.disqus').mouseover(function() {
-        $(this).find('span.ds-thread-count').css('opacity','1');
-    }).mouseleave(function() {
-        var self = $(this);
-        self.find('span.ds-thread-count').css('opacity','0.4');
-        self.find('span.ds-thread-count').not('.has-comment').css('opacity','0');
-    });
-
-    $('span.ds-thread-count').click(function(event){
-        var self = $(this);
-        if ($('span.ds-thread-count').not(self).hasClass('active')){
-            var l = $('span.ds-thread-count').filter('.active');
-            hideInlineComment(l, l.next());
-        }
-        if (!self.hasClass('active')){
-            self.addClass('active');
-            var inlineComment = $(this).next();
-            inlineComment.fadeIn();
-            $(".post-content").addClass('right');
-            var identifier =  postTitle + $(this).attr('id');
-            if (!inlineComment.hasClass('loaded')){
-                loadInlineComment(inlineComment,identifier);
-            }
-        } else {
-            hideInlineComment(self,self.next());
-        }
-        event.stopPropagation();
-    });
-
-
-    // detect a click outside the trigger.
-
-    $('html').click(function() {
-        var triggerOpened = $('span.ds-thread-count').filter('.active');
-        triggerOpened.removeClass('active');
-        if(triggerOpened.next().is(":visible")) {
-            triggerOpened.next().fadeOut();
-        }
-        $(".post-content").filter('.right').removeClass('right');
-    });
-
-    $('.inline-comment').click(function(){
-        event.stopPropagation();
-
-    })
-
-
-    var hideInlineComment = function(trigger,comment) {
-
-        trigger.removeClass('active');
-        $(".post-content").removeClass('right');
-        comment.fadeOut();
-
-    };
-
-
-    var loadInlineComment = function (container,id){
-        $(container).addClass('loaded');
-        var el = document.createElement('div');
-        el.setAttribute('data-thread-key', id);
-        el.setAttribute('data-url', postHref);
-        el.setAttribute('data-title', postTitle);
-        el.setAttribute('data-author-key', duoshuoName); // change to your duoshuo name
-        DUOSHUO.EmbedThread(el);
-        $(container).append(el);
-    }
-}
-
-//    Multiple DUOSHUO threads for PJAX END
-
 
 
 //   Scroll spy headline
@@ -307,7 +196,6 @@ function afterPjax() {
     if (isPostPage && !smallScreen) {
         generateTOC();
         setTimeout("scrollSpy()",300);
-        duoshuoInlineComment();
 
         $('.scroller').scroll(function () {
             if ((window.screen.width - 700)/2 > $('#trigger').parent().width() + $('#nexus-back').parent().width()){
@@ -331,14 +219,7 @@ function afterPjax() {
             }
         });
     }
-//   lazy load DUOSHUO
-    var ds_loaded = false;
-    if (isPostPage) {
-        setTimeout(function(){
-            toggleDuoshuoComments('#comment-box');
-            ds_loaded = true;
-        }, 1000);
-    }
+
 //    Smooth Scroll for the TOC in header
     $('#toc a').click(function (e) {
         var headID = $(this).attr('href');
@@ -394,8 +275,5 @@ $(document).on({
         setTimeout("$('#comment-box').children().remove();",100);
     },
 });
-
-
-
 
 

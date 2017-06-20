@@ -26,7 +26,6 @@
   <link rel="stylesheet" type="text/css" href="<%- config.root %>css/component.css" />
   <link rel="stylesheet" type="text/css" href="<%- config.root %>css/screen.css" />
   <meta name="generator" content="<%- config.title %>">
-  <script src="http://static.duoshuo.com/embed.js"></script>
   <% if (config.rss) { %>
   <link rel="alternate" type="application/rss+xml" title="RSS" href="<%- config.rss %>">
   <% } %>
@@ -132,7 +131,7 @@
                     </li>
                     <% } %>
                     <li class="mp-pjax"><a class="fa fa-user" href="<%= config.root %>about">&nbsp;&nbsp;&nbsp;About me</a></li>
-                    <li><a class="fa fa-github" href="#">&nbsp;&nbsp;&nbsp;Github</a></li>
+                    <li><a class="fa fa-github" href="https://github.com/<%= theme.github %>">&nbsp;&nbsp;&nbsp;Github</a></li>
 
                 </ul>
 

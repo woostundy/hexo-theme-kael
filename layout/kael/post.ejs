@@ -39,7 +39,19 @@
         <section id="comment">
             <div id="comment-box"></div>
         </section>
-
-
     </article>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    const gitment = new Gitment({
+    owner: 'woostundy',
+    repo: 'blog_comments',
+    oauth: {
+        client_id: 'e10d1539f77ab82d2d71',
+        client_secret: '4ad39492ae2a09bfcd0e7fd5fc92a5a2180b3719',
+    }
+    })
+
+    gitment.render('comment-box')
+</script>
 </main>
