@@ -10,3 +10,4 @@ weibo_show:
 scroll_spy: true
 github: woostundy
 google_analytics: UA-101322721-1
+favicon: /favicon.ico

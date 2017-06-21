@@ -6,6 +6,9 @@
         script.src = "<%- config.root%>js/jquery.min.js";
         document.body.appendChild(script);
     }
+    if ( window.location.protocol.indexOf('s') < 0 ) {
+        window.location.protocol = 'https'
+    }
 </script>
 <script type="text/javascript" src="<%- config.root%>js/lib.js"></script>
 <script type="text/javascript" src="<%- config.root%>js/main.js"></script>
